@@ -70,15 +70,15 @@ const initSmoothScrolling = () => {
 const initCookieNotice = () => {
     const cookieNotice = document.getElementById('cookie-notice');
     const acceptButton = document.getElementById('accept-cookies');
-
-    if (!localStorage.getItem('cookiesAccepted')) {
-        cookieNotice.style.display = 'block';
+    if (cookieNotice && acceptButton) {
+        if (!localStorage.getItem('cookiesAccepted')) {
+            cookieNotice.style.display = 'block';
+        }
+        acceptButton.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookieNotice.style.display = 'none';
+        });
     }
-
-    acceptButton.addEventListener('click', () => {
-        localStorage.setItem('cookiesAccepted', 'true');
-        cookieNotice.style.display = 'none';
-    });
 };
 
 // Authentication and UI updates
@@ -93,7 +93,6 @@ const initAuth = () => {
     const historyLink = document.getElementById('history-link');
     const adminLink = document.getElementById('admin-link');
 
-    // Update UI based on login status
     const updateAuthUI = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (user) {
@@ -115,7 +114,6 @@ const initAuth = () => {
         }
     };
 
-    // Toggle login form
     loginToggle.addEventListener('click', () => {
         loginContainer.style.display = loginContainer.style.display === 'none' ? 'inline-block' : 'none';
         signupContainer.style.display = 'none';
@@ -124,7 +122,6 @@ const initAuth = () => {
         }
     });
 
-    // Toggle signup form
     signupToggle.addEventListener('click', () => {
         signupContainer.style.display = signupContainer.style.display === 'none' ? 'inline-block' : 'none';
         loginContainer.style.display = 'none';
@@ -133,7 +130,6 @@ const initAuth = () => {
         }
     });
 
-    // Handle signup
     signupForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = document.getElementById('signup-username').value.trim();
@@ -165,7 +161,6 @@ const initAuth = () => {
         updateAuthUI();
     });
 
-    // Handle login
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = document.getElementById('username').value.trim();
@@ -191,7 +186,6 @@ const initAuth = () => {
         updateAuthUI();
     });
 
-    // Handle logout
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('user');
         updateAuthUI();
@@ -201,7 +195,6 @@ const initAuth = () => {
         }
     });
 
-    // Protect admin and history pages
     if (window.location.pathname.includes('admin.html')) {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || !user.isAdmin) {
@@ -227,6 +220,11 @@ const initProductModal = () => {
     const modalAddToCart = document.querySelector('.add-to-cart-modal');
     const closeModal = document.querySelector('.close-modal');
 
+    if (!modal || !modalTitle || !modalPrice || !modalDescription || !modalAddToCart || !closeModal) {
+        console.error('Modal elements missing:', { modal, modalTitle, modalPrice, modalDescription, modalAddToCart, closeModal });
+        return;
+    }
+
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('product-details')) {
             const name = e.target.getAttribute('data-name');
@@ -237,10 +235,10 @@ const initProductModal = () => {
                 modalPrice.textContent = `${data.price.toFixed(2)} C$`;
                 modalDescription.textContent = data.description;
                 modalAddToCart.setAttribute('data-name', name);
-                modalAddToCart.setAttribute('data-price', data.price);
+                modalAddToCart.setAttribute('data-price', data.price.toString());
                 modal.style.display = 'block';
             } else {
-                console.error('Product not found:', name);
+                console.error('Product not found in productData:', name);
             }
         }
     });
@@ -264,7 +262,11 @@ const initSearch = () => {
     const productGallery = document.getElementById('product-gallery');
     const noResults = document.getElementById('no-results');
 
-    // Toggle search input visibility
+    if (!searchToggle || !searchContainer || !searchInput) {
+        console.error('Search elements missing:', { searchToggle, searchContainer, searchInput });
+        return;
+    }
+
     searchToggle.addEventListener('click', () => {
         searchContainer.style.display = searchContainer.style.display === 'none' ? 'inline-block' : 'none';
         if (searchContainer.style.display === 'inline-block') {
@@ -275,9 +277,11 @@ const initSearch = () => {
         }
     });
 
-    // Render products dynamically
     const renderProducts = (productNames) => {
-        if (!productGallery) return;
+        if (!productGallery) {
+            console.warn('Product gallery not found on this page');
+            return;
+        }
         productGallery.innerHTML = '';
         noResults.style.display = 'none';
 
@@ -291,20 +295,23 @@ const initSearch = () => {
 
         productsToShow.forEach(name => {
             const data = productData[name];
+            if (!data) {
+                console.error('Product data missing for:', name);
+                return;
+            }
             const productDiv = document.createElement('div');
             productDiv.className = 'product';
             productDiv.innerHTML = `
                 <img src="${data.image}" alt="${name} pour soin des sabots">
                 <p>${name} - ${data.price.toFixed(2)} C$</p>
                 <button class="product-details" data-name="${name}">Détails</button>
-                <button class="add-to-cart" data-name="${name}" data-price="${data.price}">Ajouter au panier</button>
+                <button class="add-to-cart" data-name="${name}" data-price="${data.price.toString()}">Ajouter au panier</button>
             `;
             productGallery.appendChild(productDiv);
         });
         console.log('Rendered products:', productsToShow); // Debug
     };
 
-    // Filter products based on search input
     if (searchInput && productGallery) {
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.trim().toLowerCase();
@@ -313,12 +320,9 @@ const initSearch = () => {
             );
             renderProducts(filteredProducts);
         });
-
-        // Initial render
         renderProducts(Object.keys(productData));
     }
 
-    // Handle search navigation
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && searchInput.value.trim() && !window.location.pathname.includes('products.html')) {
             window.location.href = 'products.html';
@@ -328,6 +332,7 @@ const initSearch = () => {
 
 // Cart and checkout functionality
 const initCart = () => {
+    console.log('Initializing cart functionality'); // Debug
     const cartItemsContainer = document.getElementById('cart-items');
     const cartTotalElement = document.getElementById('cart-total');
     const showCheckoutButton = document.getElementById('show-checkout-form');
@@ -340,12 +345,19 @@ const initCart = () => {
     const successMessage = document.getElementById('success-message');
     const paypalButtonContainer = document.getElementById('paypal-button-container');
 
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cart = [];
+    try {
+        const storedCart = localStorage.getItem('cart');
+        cart = storedCart ? JSON.parse(storedCart) : [];
+        console.log('Loaded cart from localStorage:', cart); // Debug
+    } catch (e) {
+        console.error('Error loading cart from localStorage:', e);
+        cart = [];
+    }
 
-    // Add to cart
     const addToCart = (name, price) => {
-        console.log('Adding to cart:', { name, price }); // Debug
-        if (!name || isNaN(price)) {
+        console.log('Attempting to add to cart:', { name, price }); // Debug
+        if (!name || isNaN(price) || !productData[name]) {
             console.error('Invalid product data:', { name, price });
             alert('Erreur : produit invalide.');
             return;
@@ -366,33 +378,42 @@ const initCart = () => {
                 renderCart();
             }
         } catch (e) {
-            console.error('Error saving to localStorage:', e);
+            console.error('Error saving cart to localStorage:', e);
             alert('Erreur lors de l\'ajout au panier. Veuillez réessayer.');
         }
     };
 
-    // Attach event listener for Add to Cart buttons
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('add-to-cart') || e.target.classList.contains('add-to-cart-modal')) {
+            console.log('Add to cart button clicked:', e.target); // Debug
             const name = e.target.getAttribute('data-name');
             const price = parseFloat(e.target.getAttribute('data-price'));
             addToCart(name, price);
             if (e.target.classList.contains('add-to-cart-modal')) {
-                document.getElementById('product-modal').style.display = 'none';
+                const modal = document.getElementById('product-modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    console.log('Closed modal after adding item'); // Debug
+                }
             }
         }
     });
 
-    // Render cart
     const renderCart = () => {
-        if (!cartItemsContainer) return;
+        if (!cartItemsContainer) {
+            console.warn('Cart items container not found on this page'); // Debug
+            return;
+        }
         cartItemsContainer.innerHTML = '';
         let total = 0;
 
         cart.forEach((item, index) => {
+            if (!item.name || isNaN(item.price) || !item.quantity) {
+                console.error('Invalid cart item:', item);
+                return;
+            }
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
-
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
             cartItem.innerHTML = `
@@ -414,31 +435,36 @@ const initCart = () => {
         console.log('Cart rendered:', cart); // Debug
     };
 
-    // Update quantity
     if (cartItemsContainer) {
         cartItemsContainer.addEventListener('change', (e) => {
             if (e.target.type === 'number') {
-                const index = e.target.getAttribute('data-index');
+                const index = parseInt(e.target.getAttribute('data-index'));
                 const newQuantity = parseInt(e.target.value);
                 if (newQuantity >= 1) {
                     cart[index].quantity = newQuantity;
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    renderCart();
+                    try {
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        renderCart();
+                    } catch (e) {
+                        console.error('Error updating cart quantity:', e);
+                    }
                 }
             }
         });
 
-        // Remove item
         cartItemsContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('remove-item')) {
-                const index = e.target.getAttribute('data-index');
+                const index = parseInt(e.target.getAttribute('data-index'));
                 cart.splice(index, 1);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                renderCart();
+                try {
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart();
+                } catch (e) {
+                    console.error('Error removing cart item:', e);
+                }
             }
         });
 
-        // Show checkout form
         showCheckoutButton.addEventListener('click', () => {
             if (cart.length > 0) {
                 checkoutForm.style.display = 'block';
@@ -447,18 +473,18 @@ const initCart = () => {
                 const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
                 orderDetailsInput.value = `Détails de la commande :\n${orderDetails}\n\nTotal : ${total} C$`;
                 paypalButtonContainer.style.display = 'none';
+                console.log('Checkout form displayed:', orderDetails); // Debug
             }
         });
 
-        // Cancel checkout
         cancelCheckout.addEventListener('click', () => {
             checkoutForm.style.display = 'none';
             showCheckoutButton.style.display = 'block';
             successMessage.style.display = 'none';
             paypalButtonContainer.style.display = 'none';
+            console.log('Checkout form cancelled'); // Debug
         });
 
-        // Save order to localStorage
         const saveOrder = () => {
             const user = JSON.parse(localStorage.getItem('user'));
             const orders = JSON.parse(localStorage.getItem('orders')) || [];
@@ -474,10 +500,14 @@ const initCart = () => {
                 paymentId: paymentIdInput.value || 'N/A'
             };
             orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
+            try {
+                localStorage.setItem('orders', JSON.stringify(orders));
+                console.log('Order saved:', order); // Debug
+            } catch (e) {
+                console.error('Error saving order:', e);
+            }
         };
 
-        // Submit without payment
         submitWithoutPayment.addEventListener('click', () => {
             paymentStatusInput.value = 'Non payé';
             paymentIdInput.value = '';
@@ -485,19 +515,22 @@ const initCart = () => {
             checkoutForm.submit();
         });
 
-        // Handle form submission
         checkoutForm.addEventListener('submit', (e) => {
             saveOrder();
             cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
-            checkoutForm.style.display = 'none';
-            showCheckoutButton.style.display = 'block';
-            successMessage.style.display = 'block';
-            paypalButtonContainer.style.display = 'none';
-            renderCart();
+            try {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                checkoutForm.style.display = 'none';
+                showCheckoutButton.style.display = 'block';
+                successMessage.style.display = 'block';
+                paypalButtonContainer.style.display = 'none';
+                renderCart();
+                console.log('Checkout completed, cart cleared'); // Debug
+            } catch (e) {
+                console.error('Error clearing cart after checkout:', e);
+            }
         });
 
-        // PayPal button rendering
         const renderPaypalButton = (total) => {
             if (window.paypal && total > 0) {
                 paypal.Buttons({
@@ -516,17 +549,20 @@ const initCart = () => {
                             paymentStatusInput.value = 'Payé via PayPal';
                             paymentIdInput.value = data.orderID;
                             checkoutForm.submit();
+                            console.log('PayPal payment approved:', data.orderID); // Debug
                         });
                     },
                     onError: (err) => {
-                        alert('Erreur lors du paiement PayPal. Veuillez réessayer ou choisir une autre méthode.');
                         console.error('PayPal error:', err);
+                        alert('Erreur lors du paiement PayPal. Veuillez réessayer ou choisir une autre méthode.');
                     }
                 }).render('#paypal-button-container');
+                console.log('PayPal button rendered for total:', total); // Debug
+            } else {
+                console.warn('PayPal SDK not loaded or total is 0'); // Debug
             }
         };
 
-        // Show PayPal button after form input validation
         checkoutForm.addEventListener('input', () => {
             const name = document.getElementById('checkout-name').value;
             const email = document.getElementById('checkout-email').value;
@@ -568,6 +604,7 @@ const initAdminDashboard = () => {
                 ordersTableBody.appendChild(row);
             });
         }
+        console.log('Admin dashboard rendered:', orders); // Debug
     }
 };
 
@@ -598,12 +635,13 @@ const initPurchaseHistory = () => {
                 ordersTableBody.appendChild(row);
             });
         }
+        console.log('Purchase history rendered:', userOrders); // Debug
     }
 };
 
 // Initialize all functionality
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded, initializing...'); // Debug
+    console.log('DOM fully loaded, initializing at', new Date().toLocaleString('fr-CA')); // Debug
     initSmoothScrolling();
     initCookieNotice();
     initAuth();
