@@ -2,107 +2,70 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parage Bragdon - Panier</title>
-    <meta name="description" content="Consultez votre panier et passez à la caisse chez Parage Bragdon.">
-    <meta name="author" content="Parage Bragdon">
-    <meta name="keywords" content="panier, achat, produits Red Horse, Parage Bragdon">
-    <meta property="og:url" content="https://paragebragdon.com/cart.html">
-    <meta property="og:site_name" content="Parage Bragdon">
-    <meta property="og:title" content="Parage Bragdon - Panier">
-    <meta property="og:description" content="Consultez votre panier et passez à la caisse chez Parage Bragdon.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
-    <meta property="og:locale" content="fr_FR">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Parage Bragdon - Panier">
-    <meta name="twitter:description" content="Consultez votre panier et passez à la caisse chez Parage Bragdon.">
-    <meta name="twitter:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
-    <meta name="twitter:image:alt" content="Parage Bragdon Panier">
-    <meta name="theme-color" content="#735e4a">
-    <meta name="google-site-verification" content="sVG358mPSuGwSEhhBTpzC8YA8ZkrW5Nhav9zKZE6je4">
+    <title>Panier - Parage Bragdon</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=CAD"></script>
 </head>
 <body>
     <header>
+        <h1>Parage Bragdon</h1>
         <nav>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="products.html">Boutique</a></li>
-                <li><a href="cart.html">Panier</a></li>
-                <li>
-                    <button id="search-toggle" aria-label="Ouvrir la recherche">🔍</button>
-                    <div id="search-container" style="display: none;">
-                        <input type="text" id="search-input" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
-                    </div>
-                </li>
-                <li>
-                    <button id="login-toggle" aria-label="Connexion">Connexion</button>
-                    <button id="signup-toggle" aria-label="S'inscrire">S'inscrire</button>
-                    <div id="login-container" style="display: none;">
-                        <form id="login-form">
-                            <input type="text" id="username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
-                            <input type="password" id="password" placeholder="Mot de passe" aria-label="Mot de passe" required>
-                            <button type="submit">Se connecter</button>
-                        </form>
-                    </div>
-                    <div id="signup-container" style="display: none;">
-                        <form id="signup-form">
-                            <input type="text" id="signup-username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
-                            <input type="email" id="signup-email" placeholder="Email" aria-label="Email" required>
-                            <input type="password" id="signup-password" placeholder="Mot de passe" aria-label="Mot de passe" required>
-                            <button type="submit">S'inscrire</button>
-                        </form>
-                    </div>
-                    <button id="logout-button" style="display: none;">Déconnexion</button>
-                    <a href="history.html" id="history-link" style="display: none;">Historique</a>
-                    <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
-                </li>
-            </ul>
+            <a href="index.html">Accueil</a>
+            <a href="products.html">Produits</a>
+            <a href="cart.html">Panier</a>
+            <a href="history.html" id="history-link" style="display: none;">Historique</a>
+            <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
+            <button id="login-toggle">Connexion</button>
+            <button id="signup-toggle">Inscription</button>
+            <button id="logout-button" style="display: none;">Déconnexion</button>
         </nav>
+        <div id="login-container" style="display: none;">
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+                <input type="password" id="password" placeholder="Mot de passe" required>
+                <button type="submit">Connexion</button>
+            </form>
+        </div>
+        <div id="signup-container" style="display: none;">
+            <form id="signup-form">
+                <input type="text" id="signup-username" placeholder="Nom d'utilisateur" required>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Mot de passe" required>
+                <button type="submit">Inscription</button>
+            </form>
+        </div>
     </header>
 
     <main>
         <section id="cart">
-            <h2>Panier</h2>
+            <h2>Votre Panier</h2>
             <div id="cart-items"></div>
             <p id="cart-total">Total : 0.00 C$</p>
-            <button id="show-checkout-form" disabled>Acheter</button>
-            <form id="checkout-form" class="checkout-form" action="https://formspree.io/f/your-checkout-form-id" method="POST" style="display: none;">
-                <input type="hidden" name="order_details" id="order-details">
-                <input type="hidden" name="payment_status" id="payment-status" value="Non payé">
+            <button id="show-checkout-form" disabled>Passer la commande</button>
+            <form id="checkout-form" action="https://formspree.io/f/your-checkout-form-id" method="POST" style="display: none;">
+                <input type="text" name="name" id="checkout-name" placeholder="Nom" required>
+                <input type="email" name="email" id="checkout-email" placeholder="Email" required>
+                <input type="text" name="address" id="checkout-address" placeholder="Adresse" required>
+                <input type="tel" name="phone" id="checkout-phone" placeholder="Téléphone">
+                <textarea name="order_details" id="order-details" readonly></textarea>
+                <input type="hidden" name="payment_status" id="payment-status">
                 <input type="hidden" name="payment_id" id="payment-id">
-                <label for="checkout-name">Nom complet</label>
-                <input type="text" id="checkout-name" name="name" placeholder="Nom complet" required>
-                <label for="checkout-email">Email</label>
-                <input type="email" id="checkout-email" name="email" placeholder="Email" required>
-                <label for="checkout-address">Adresse de livraison</label>
-                <textarea id="checkout-address" name="address" placeholder="Adresse complète" rows="4" required></textarea>
-                <label for="checkout-phone">Téléphone (facultatif)</label>
-                <input type="tel" id="checkout-phone" name="phone" placeholder="Numéro de téléphone">
-                <p>Ce site est protégé par reCAPTCHA et soumis aux <a href="https://policies.google.com/privacy">Politique de confidentialité</a> et <a href="https://policies.google.com/terms">Conditions d'utilisation</a> de Google.</p>
-                <div class="form-buttons">
-                    <button type="button" id="submit-without-payment">Commander sans paiement en ligne</button>
-                    <button type="button" id="cancel-checkout">Annuler</button>
-                </div>
-                <div id="paypal-button-container" style="display: none; margin-top: 1rem;"></div>
+                <button type="button" id="cancel-checkout">Annuler</button>
+                <button type="button" id="submit-without-payment">Commander sans paiement</button>
+                <div id="paypal-button-container" style="display: none;"></div>
             </form>
-            <p id="success-message" style="display: none; color: #4caf50;">Commande envoyée avec succès ! Vous recevrez un courriel de confirmation.</p>
+            <p id="success-message" style="display: none;">Commande passée avec succès ! Vous recevrez un email de confirmation.</p>
         </section>
     </main>
 
-    <footer>
-        <p>Parage Bragdon</p>
-        <p>Copyright © 2023 Parage Bragdon - Tous droits réservés.</p>
-    </footer>
-
     <div id="cookie-notice">
-        <p>Ce site utilise des cookies.</p>
-        <p>Nous utilisons des cookies pour analyser le trafic du site et optimiser votre expérience. En acceptant, vos données seront agrégées avec celles des autres utilisateurs.</p>
-        <button id="accept-cookies">Accepter</button>
+        <p>Nous utilisons des cookies pour améliorer votre expérience. <button id="accept-cookies">Accepter</button></p>
     </div>
+
+    <footer>
+        <p>&copy; 2025 Parage Bragdon. Tous droits réservés.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
