@@ -65,7 +65,7 @@ document.querySelectorAll('nav a').forEach(anchor => {
 });
 
 // Cookie notice
-document.addEventListener('DOMContentLoaded', () => {
+const initCookieNotice = () => {
     const cookieNotice = document.getElementById('cookie-notice');
     const acceptButton = document.getElementById('accept-cookies');
 
@@ -77,29 +77,38 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('cookiesAccepted', 'true');
         cookieNotice.style.display = 'none';
     });
-});
+};
 
-// Login functionality
-document.addEventListener('DOMContentLoaded', () => {
+// Authentication and UI updates
+const initAuth = () => {
     const loginToggle = document.getElementById('login-toggle');
+    const signupToggle = document.getElementById('signup-toggle');
     const loginContainer = document.getElementById('login-container');
+    const signupContainer = document.getElementById('signup-container');
     const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
     const logoutButton = document.getElementById('logout-button');
+    const historyLink = document.getElementById('history-link');
     const adminLink = document.getElementById('admin-link');
 
-    // Check login status
-    const updateLoginUI = () => {
+    // Update UI based on login status
+    const updateAuthUI = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (user) {
             loginToggle.style.display = 'none';
+            signupToggle.style.display = 'none';
             loginContainer.style.display = 'none';
+            signupContainer.style.display = 'none';
             logoutButton.style.display = 'inline-block';
-            if (user.isAdmin) {
-                adminLink.style.display = 'inline-block';
-            }
+            historyLink.style.display = user.isAdmin ? 'none' : 'inline-block';
+            adminLink.style.display = user.isAdmin ? 'inline-block' : 'none';
         } else {
             loginToggle.style.display = 'inline-block';
+            signupToggle.style.display = 'inline-block';
+            loginContainer.style.display = 'none';
+            signupContainer.style.display = 'none';
             logoutButton.style.display = 'none';
+            historyLink.style.display = 'none';
             adminLink.style.display = 'none';
         }
     };
@@ -107,9 +116,51 @@ document.addEventListener('DOMContentLoaded', () => {
     // Toggle login form
     loginToggle.addEventListener('click', () => {
         loginContainer.style.display = loginContainer.style.display === 'none' ? 'inline-block' : 'none';
+        signupContainer.style.display = 'none';
         if (loginContainer.style.display === 'inline-block') {
             document.getElementById('username').focus();
         }
+    });
+
+    // Toggle signup form
+    signupToggle.addEventListener('click', () => {
+        signupContainer.style.display = signupContainer.style.display === 'none' ? 'inline-block' : 'none';
+        loginContainer.style.display = 'none';
+        if (signupContainer.style.display === 'inline-block') {
+            document.getElementById('signup-username').focus();
+        }
+    });
+
+    // Handle signup
+    signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signup-username').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const password = document.getElementById('signup-password').value.trim();
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('Veuillez entrer une adresse email valide.');
+            return;
+        }
+
+        if (users.some(u => u.username === username)) {
+            alert('Ce nom d\'utilisateur est déjà pris.');
+            return;
+        }
+
+        if (password.length < 6) {
+            alert('Le mot de passe doit contenir au moins 6 caractères.');
+            return;
+        }
+
+        users.push({ username, email, password, isAdmin: false });
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('user', JSON.stringify({ username, isAdmin: false }));
+        alert('Inscription réussie ! Vous êtes maintenant connecté.');
+        signupContainer.style.display = 'none';
+        signupForm.reset();
+        updateAuthUI();
     });
 
     // Handle login
@@ -117,46 +168,56 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value.trim();
+        const users = JSON.parse(localStorage.getItem('users')) || [];
 
         if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
             localStorage.setItem('user', JSON.stringify({ username, isAdmin: true }));
             alert('Connexion réussie en tant qu\'admin !');
             window.location.href = 'admin.html';
-        } else if (username && password) {
-            localStorage.setItem('user', JSON.stringify({ username, isAdmin: false }));
-            alert('Connexion réussie !');
         } else {
-            alert('Nom d\'utilisateur ou mot de passe incorrect.');
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                localStorage.setItem('user', JSON.stringify({ username, isAdmin: false }));
+                alert('Connexion réussie !');
+            } else {
+                alert('Nom d\'utilisateur ou mot de passe incorrect.');
+            }
         }
 
         loginContainer.style.display = 'none';
         loginForm.reset();
-        updateLoginUI();
+        updateAuthUI();
     });
 
     // Handle logout
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('user');
-        updateLoginUI();
+        updateAuthUI();
         alert('Déconnexion réussie.');
-        if (window.location.pathname.includes('admin.html')) {
+        if (window.location.pathname.includes('admin.html') || window.location.pathname.includes('history.html')) {
             window.location.href = 'index.html';
         }
     });
 
-    // Protect admin page
+    // Protect admin and history pages
     if (window.location.pathname.includes('admin.html')) {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user || !user.isAdmin) {
             window.location.href = 'index.html';
         }
     }
+    if (window.location.pathname.includes('history.html')) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            window.location.href = 'index.html';
+        }
+    }
 
-    updateLoginUI();
-});
+    updateAuthUI();
+};
 
 // Product modal functionality
-document.addEventListener('DOMContentLoaded', () => {
+const initProductModal = () => {
     const modal = document.getElementById('product-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalPrice = document.getElementById('modal-price');
@@ -188,10 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = 'none';
         }
     });
-});
+};
 
 // Search functionality
-document.addEventListener('DOMContentLoaded', () => {
+const initSearch = () => {
     const searchToggle = document.getElementById('search-toggle');
     const searchContainer = document.getElementById('search-container');
     const searchInput = document.getElementById('search-input');
@@ -257,10 +318,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'products.html';
         }
     });
-});
+};
 
 // Cart and checkout functionality
-document.addEventListener('DOMContentLoaded', () => {
+const initCart = () => {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartTotalElement = document.getElementById('cart-total');
     const showCheckoutButton = document.getElementById('show-checkout-form');
@@ -367,19 +428,13 @@ document.addEventListener('DOMContentLoaded', () => {
             paypalButtonContainer.style.display = 'none';
         });
 
-        // Submit without payment
-        submitWithoutPayment.addEventListener('click', () => {
-            paymentStatusInput.value = 'Non payé';
-            paymentIdInput.value = '';
-            saveOrder();
-            checkoutForm.submit();
-        });
-
         // Save order to localStorage
         const saveOrder = () => {
+            const user = JSON.parse(localStorage.getItem('user'));
             const orders = JSON.parse(localStorage.getItem('orders')) || [];
             const order = {
                 date: new Date().toLocaleString('fr-CA'),
+                username: user ? user.username : 'Invité',
                 name: document.getElementById('checkout-name').value,
                 email: document.getElementById('checkout-email').value,
                 address: document.getElementById('checkout-address').value,
@@ -392,9 +447,16 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('orders', JSON.stringify(orders));
         };
 
+        // Submit without payment
+        submitWithoutPayment.addEventListener('click', () => {
+            paymentStatusInput.value = 'Non payé';
+            paymentIdInput.value = '';
+            saveOrder();
+            checkoutForm.submit();
+        });
+
         // Handle form submission
         checkoutForm.addEventListener('submit', (e) => {
-            // Formspree handles email sending; save order and reset cart
             saveOrder();
             cart = [];
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -448,8 +510,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         renderCart();
     }
+};
 
-    // Admin dashboard functionality
+// Admin dashboard functionality
+const initAdminDashboard = () => {
     const ordersTableBody = document.getElementById('orders-body');
     const noOrdersMessage = document.getElementById('no-orders');
     if (ordersTableBody) {
@@ -459,6 +523,37 @@ document.addEventListener('DOMContentLoaded', () => {
             noOrdersMessage.style.display = 'block';
         } else {
             orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.date}</td>
+                    <td>${order.username}</td>
+                    <td>${order.name}</td>
+                    <td>${order.email}</td>
+                    <td>${order.address}</td>
+                    <td>${order.phone}</td>
+                    <td><pre>${order.orderDetails}</pre></td>
+                    <td>${order.paymentStatus}</td>
+                    <td>${order.paymentId}</td>
+                `;
+                ordersTableBody.appendChild(row);
+            });
+        }
+    }
+};
+
+// Purchase history functionality
+const initPurchaseHistory = () => {
+    const ordersTableBody = document.getElementById('orders-body');
+    const noOrdersMessage = document.getElementById('no-orders');
+    if (ordersTableBody) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        const userOrders = orders.filter(order => order.username === user.username);
+        ordersTableBody.innerHTML = '';
+        if (userOrders.length === 0) {
+            noOrdersMessage.style.display = 'block';
+        } else {
+            userOrders.forEach(order => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${order.date}</td>
@@ -474,4 +569,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+};
+
+// Initialize all functionality
+document.addEventListener('DOMContentLoaded', () => {
+    initCookieNotice();
+    initAuth();
+    initProductModal();
+    initSearch();
+    initCart();
+    initAdminDashboard();
+    initPurchaseHistory();
 });
