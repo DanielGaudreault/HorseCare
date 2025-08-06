@@ -48,16 +48,21 @@ section {
     gap: 1rem;
 }
 
-.gallery img {
+.product {
+    max-width: 600px;
+    text-align: center;
+}
+
+.product img {
     width: 100%;
     max-width: 600px;
     height: auto;
     object-fit: contain;
 }
 
-.music-player {
-    max-width: 600px;
-    margin: 0 auto;
+.product p {
+    font-size: 1rem;
+    margin-top: 0.5rem;
 }
 
 #contact {
@@ -88,7 +93,11 @@ section {
         font-size: 1rem;
     }
 
-    .gallery img {
+    .product {
+        max-width: 100%;
+    }
+
+    .product img {
         max-width: 100%;
     }
 }
