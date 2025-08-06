@@ -28,6 +28,7 @@ nav ul {
     display: flex;
     justify-content: center;
     gap: 2rem;
+    align-items: center;
 }
 
 nav a {
@@ -41,6 +42,38 @@ nav a {
 
 nav a:hover {
     color: #aaa;
+}
+
+#search-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#search-toggle:hover {
+    color: #aaa;
+}
+
+#search-container {
+    display: inline-block;
+}
+
+#search-input {
+    padding: 0.5rem;
+    background: #222;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    border-radius: 4px;
+    width: 200px;
+}
+
+#search-input:focus {
+    outline: none;
+    background: #333;
 }
 
 main {
@@ -134,7 +167,7 @@ h3 {
     color: #aaa;
 }
 
-#about p, #pricing p, #contact p, #cart p {
+#about p, #pricing p, #contact p, #cart p, #no-results {
     font-size: 1rem;
     margin: 0.5rem 0;
     text-align: center;
@@ -160,7 +193,8 @@ h3 {
 .contact-form input,
 .contact-form textarea,
 .checkout-form input,
-.checkout-form textarea {
+.checkout-form textarea,
+#search-input {
     padding: 0.5rem;
     background: #222;
     border: none;
@@ -344,8 +378,12 @@ footer p {
         gap: 1rem;
     }
 
-    nav a {
+    nav a, #search-toggle {
         font-size: 1rem;
+    }
+
+    #search-input {
+        width: 100%;
     }
 
     .gallery {
@@ -380,7 +418,8 @@ footer p {
     .contact-form input,
     .contact-form textarea,
     .checkout-form input,
-    .checkout-form textarea {
+    .checkout-form textarea,
+    #search-input {
         font-size: 0.9rem;
     }
 
