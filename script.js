@@ -3,10 +3,13 @@ document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const href = this.getAttribute('href');
-        if (href.includes('.html')) {
-            window.location.href = href; // Navigate to other page
+        if (href.includes('#')) {
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         } else {
-            document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+            window.location.href = href;
         }
     });
 });
@@ -16,11 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const cookieNotice = document.getElementById('cookie-notice');
     const acceptButton = document.getElementById('accept-cookies');
 
-    // Show cookie notice
-    cookieNotice.style.display = 'block';
+    // Check if cookies have been accepted
+    if (!localStorage.getItem('cookiesAccepted')) {
+        cookieNotice.style.display = 'block';
+    }
 
-    // Hide notice when accepted
     acceptButton.addEventListener('click', () => {
+        localStorage.setItem('cookiesAccepted', 'true');
         cookieNotice.style.display = 'none';
     });
 });
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
-            alert(`${name} added to cart!`);
+            alert(`${name} ajouté au panier !`);
         });
     });
 
@@ -67,12 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 cartItem.innerHTML = `
                     <span>${item.name} - ${item.price.toFixed(2)} C$ x </span>
                     <input type="number" min="1" value="${item.quantity}" data-index="${index}">
-                    <button class="remove-item" data-index="${index}">Remove</button>
+                    <button class="remove-item" data-index="${index}">Supprimer</button>
                 `;
                 cartItemsContainer.appendChild(cartItem);
             });
 
-            cartTotalElement.textContent = `Total: ${total.toFixed(2)} C$`;
+            cartTotalElement.textContent = `Total : ${total.toFixed(2)} C$`;
             checkoutButton.disabled = cart.length === 0;
         };
 
@@ -104,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cart.length > 0) {
                 const orderDetails = cart.map(item => `${item.name} x${item.quantity} - ${item.price.toFixed(2)} C$`).join('\n');
                 const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
-                const subject = encodeURIComponent('Order from Parage Bragdon');
-                const body = encodeURIComponent(`Order Details:\n${orderDetails}\n\nTotal: ${total} C$`);
+                const subject = encodeURIComponent('Commande de Parage Bragdon');
+                const body = encodeURIComponent(`Détails de la commande :\n${orderDetails}\n\nTotal : ${total} C$`);
                 window.location.href = `mailto:sales@paragebragdon.com?subject=${subject}&body=${body}`;
                 cart = [];
                 localStorage.setItem('cart', JSON.stringify(cart));
