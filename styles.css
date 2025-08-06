@@ -98,7 +98,7 @@ h3 {
     margin: 0.5rem 0;
 }
 
-.product-details, .add-to-cart, .add-to-cart-modal, #show-checkout-form {
+.product-details, .add-to-cart, .add-to-cart-modal, #show-checkout-form, #submit-without-payment {
     background: #444;
     border: none;
     color: #fff;
@@ -111,7 +111,7 @@ h3 {
     transition: background 0.3s;
 }
 
-.product-details:hover, .add-to-cart:hover, .add-to-cart-modal:hover, #show-checkout-form:hover {
+.product-details:hover, .add-to-cart:hover, .add-to-cart-modal:hover, #show-checkout-form:hover, #submit-without-payment:hover {
     background: #555;
 }
 
@@ -245,6 +245,11 @@ h3 {
     font-size: 1.2rem;
     text-align: right;
     margin-bottom: 1rem;
+}
+
+#paypal-button-container {
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 footer {
