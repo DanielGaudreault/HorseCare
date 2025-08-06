@@ -2,36 +2,57 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parage Bragdon - Panier</title>
-    <meta name="description" content="View your cart and proceed to checkout at Parage Bragdon.">
+    <meta name="description" content="Consultez votre panier et passez à la caisse chez Parage Bragdon.">
+    <meta name="author" content="Parage Bragdon">
+    <meta name="keywords" content="panier, achat, produits Red Horse, Parage Bragdon">
+    <meta property="og:url" content="https://paragebragdon.com/cart.html">
+    <meta property="og:site_name" content="Parage Bragdon">
+    <meta property="og:title" content="Parage Bragdon - Panier">
+    <meta property="og:description" content="Consultez votre panier et passez à la caisse chez Parage Bragdon.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
+    <meta property="og:locale" content="fr_FR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Parage Bragdon - Panier">
+    <meta name="twitter:description" content="Consultez votre panier et passez à la caisse chez Parage Bragdon.">
+    <meta name="twitter:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
+    <meta name="twitter:image:alt" content="Parage Bragdon Panier">
+    <meta name="theme-color" content="#735e4a">
+    <meta name="google-site-verification" content="sVG358mPSuGwSEhhBTpzC8YA8ZkrW5Nhav9zKZE6je4">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">ACCUEIL</a></li>
-            <li><a href="products.html">BOUTIQUE</a></li>
-            <li><a href="cart.html">PANIER</a></li>
-        </ul>
-    </nav>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="products.html">Boutique</a></li>
+                <li><a href="cart.html">Panier</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <section id="cart">
-        <h2>Panier</h2>
-        <div id="cart-items"></div>
-        <p id="cart-total">Total: 0.00 C$</p>
-        <button id="checkout-button" disabled>Proceed to Checkout</button>
-    </section>
+    <main>
+        <section id="cart">
+            <h2>Panier</h2>
+            <div id="cart-items"></div>
+            <p id="cart-total">Total : 0.00 C$</p>
+            <button id="checkout-button" disabled>Passer à la caisse</button>
+        </section>
+    </main>
 
     <footer>
         <p>Parage Bragdon</p>
-        <p>Copyright © 2023 Parage Bragdon - All Rights Reserved.</p>
+        <p>Copyright © 2023 Parage Bragdon - Tous droits réservés.</p>
     </footer>
 
     <div id="cookie-notice">
-        <p>This website uses cookies.</p>
-        <p>We use cookies to analyze website traffic and optimize your website experience. By accepting our use of cookies, your data will be aggregated with all other user data.</p>
-        <button id="accept-cookies">Accept</button>
+        <p>Ce site utilise des cookies.</p>
+        <p>Nous utilisons des cookies pour analyser le trafic du site et optimiser votre expérience. En acceptant, vos données seront agrégées avec celles des autres utilisateurs.</p>
+        <button id="accept-cookies">Accepter</button>
     </div>
 
     <script src="script.js"></script>
