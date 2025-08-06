@@ -16,22 +16,26 @@
             <a href="cart.html">Panier</a>
             <a href="history.html" id="history-link" style="display: none;">Historique</a>
             <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
+            <button id="search-toggle">Rechercher</button>
             <button id="login-toggle">Connexion</button>
             <button id="signup-toggle">Inscription</button>
             <button id="logout-button" style="display: none;">Déconnexion</button>
         </nav>
+        <div id="search-container" style="display: none;">
+            <input type="text" id="search-input" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
+        </div>
         <div id="login-container" style="display: none;">
             <form id="login-form">
-                <input type="text" id="username" placeholder="Nom d'utilisateur" required>
-                <input type="password" id="password" placeholder="Mot de passe" required>
+                <input type="text" id="username" placeholder="Nom d'utilisateur" required aria-label="Nom d'utilisateur">
+                <input type="password" id="password" placeholder="Mot de passe" required aria-label="Mot de passe">
                 <button type="submit">Connexion</button>
             </form>
         </div>
         <div id="signup-container" style="display: none;">
             <form id="signup-form">
-                <input type="text" id="signup-username" placeholder="Nom d'utilisateur" required>
-                <input type="email" id="signup-email" placeholder="Email" required>
-                <input type="password" id="signup-password" placeholder="Mot de passe" required>
+                <input type="text" id="signup-username" placeholder="Nom d'utilisateur" required aria-label="Nom d'utilisateur">
+                <input type="email" id="signup-email" placeholder="Email" required aria-label="Email">
+                <input type="password" id="signup-password" placeholder="Mot de passe" required aria-label="Mot de passe">
                 <button type="submit">Inscription</button>
             </form>
         </div>
@@ -44,11 +48,11 @@
             <p id="cart-total">Total : 0.00 C$</p>
             <button id="show-checkout-form" disabled>Passer la commande</button>
             <form id="checkout-form" action="https://formspree.io/f/your-checkout-form-id" method="POST" style="display: none;">
-                <input type="text" name="name" id="checkout-name" placeholder="Nom" required>
-                <input type="email" name="email" id="checkout-email" placeholder="Email" required>
-                <input type="text" name="address" id="checkout-address" placeholder="Adresse" required>
-                <input type="tel" name="phone" id="checkout-phone" placeholder="Téléphone">
-                <textarea name="order_details" id="order-details" readonly></textarea>
+                <input type="text" name="name" id="checkout-name" placeholder="Nom" required aria-label="Nom">
+                <input type="email" name="email" id="checkout-email" placeholder="Email" required aria-label="Email">
+                <input type="text" name="address" id="checkout-address" placeholder="Adresse" required aria-label="Adresse">
+                <input type="tel" name="phone" id="checkout-phone" placeholder="Téléphone" aria-label="Téléphone">
+                <textarea name="order_details" id="order-details" readonly aria-label="Détails de la commande"></textarea>
                 <input type="hidden" name="payment_status" id="payment-status">
                 <input type="hidden" name="payment_id" id="payment-id">
                 <button type="button" id="cancel-checkout">Annuler</button>
