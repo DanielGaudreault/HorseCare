@@ -40,7 +40,24 @@
             <h2>Panier</h2>
             <div id="cart-items"></div>
             <p id="cart-total">Total : 0.00 C$</p>
-            <button id="checkout-button" disabled>Passer à la caisse</button>
+            <button id="show-checkout-form" disabled>Acheter</button>
+            <form id="checkout-form" class="checkout-form" action="https://formspree.io/f/your-checkout-form-id" method="POST" style="display: none;">
+                <input type="hidden" name="order_details" id="order-details">
+                <label for="checkout-name">Nom complet</label>
+                <input type="text" id="checkout-name" name="name" placeholder="Nom complet" required>
+                <label for="checkout-email">Email</label>
+                <input type="email" id="checkout-email" name="email" placeholder="Email" required>
+                <label for="checkout-address">Adresse de livraison</label>
+                <textarea id="checkout-address" name="address" placeholder="Adresse complète" rows="4" required></textarea>
+                <label for="checkout-phone">Téléphone (facultatif)</label>
+                <input type="tel" id="checkout-phone" name="phone" placeholder="Numéro de téléphone">
+                <p>Ce site est protégé par reCAPTCHA et soumis aux <a href="https://policies.google.com/privacy">Politique de confidentialité</a> et <a href="https://policies.google.com/terms">Conditions d'utilisation</a> de Google.</p>
+                <div class="form-buttons">
+                    <button type="submit">Confirmer la commande</button>
+                    <button type="button" id="cancel-checkout">Annuler</button>
+                </div>
+            </form>
+            <p id="success-message" style="display: none; color: #4caf50;">Commande envoyée avec succès ! Vous recevrez un courriel de confirmation.</p>
         </section>
     </main>
 
