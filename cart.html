@@ -23,6 +23,7 @@
     <meta name="theme-color" content="#735e4a">
     <meta name="google-site-verification" content="sVG358mPSuGwSEhhBTpzC8YA8ZkrW5Nhav9zKZE6je4">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=CAD"></script>
 </head>
 <body>
     <header>
@@ -43,6 +44,8 @@
             <button id="show-checkout-form" disabled>Acheter</button>
             <form id="checkout-form" class="checkout-form" action="https://formspree.io/f/your-checkout-form-id" method="POST" style="display: none;">
                 <input type="hidden" name="order_details" id="order-details">
+                <input type="hidden" name="payment_status" id="payment-status" value="Non payé">
+                <input type="hidden" name="payment_id" id="payment-id">
                 <label for="checkout-name">Nom complet</label>
                 <input type="text" id="checkout-name" name="name" placeholder="Nom complet" required>
                 <label for="checkout-email">Email</label>
@@ -53,9 +56,10 @@
                 <input type="tel" id="checkout-phone" name="phone" placeholder="Numéro de téléphone">
                 <p>Ce site est protégé par reCAPTCHA et soumis aux <a href="https://policies.google.com/privacy">Politique de confidentialité</a> et <a href="https://policies.google.com/terms">Conditions d'utilisation</a> de Google.</p>
                 <div class="form-buttons">
-                    <button type="submit">Confirmer la commande</button>
+                    <button type="button" id="submit-without-payment">Commander sans paiement en ligne</button>
                     <button type="button" id="cancel-checkout">Annuler</button>
                 </div>
+                <div id="paypal-button-container" style="display: none; margin-top: 1rem;"></div>
             </form>
             <p id="success-message" style="display: none; color: #4caf50;">Commande envoyée avec succès ! Vous recevrez un courriel de confirmation.</p>
         </section>
