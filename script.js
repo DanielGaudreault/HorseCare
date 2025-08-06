@@ -107,8 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const showCheckoutButton = document.getElementById('show-checkout-form');
     const checkoutForm = document.getElementById('checkout-form');
     const cancelCheckout = document.getElementById('cancel-checkout');
+    const submitWithoutPayment = document.getElementById('submit-without-payment');
     const orderDetailsInput = document.getElementById('order-details');
+    const paymentStatusInput = document.getElementById('payment-status');
+    const paymentIdInput = document.getElementById('payment-id');
     const successMessage = document.getElementById('success-message');
+    const paypalButtonContainer = document.getElementById('paypal-button-container');
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -153,6 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cartTotalElement.textContent = `Total : ${total.toFixed(2)} C$`;
         showCheckoutButton.disabled = cart.length === 0;
+        if (paypalButtonContainer) {
+            paypalButtonContainer.style.display = 'none';
+            renderPaypalButton(total);
+        }
     };
 
     // Update quantity
@@ -187,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const orderDetails = cart.map(item => `${item.name} x${item.quantity} - ${item.price.toFixed(2)} C$`).join('\n');
                 const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
                 orderDetailsInput.value = `Détails de la commande :\n${orderDetails}\n\nTotal : ${total} C$`;
+                paypalButtonContainer.style.display = 'none';
             }
         });
 
@@ -195,6 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutForm.style.display = 'none';
             showCheckoutButton.style.display = 'block';
             successMessage.style.display = 'none';
+            paypalButtonContainer.style.display = 'none';
+        });
+
+        // Submit without payment
+        submitWithoutPayment.addEventListener('click', () => {
+            paymentStatusInput.value = 'Non payé';
+            paymentIdInput.value = '';
+            checkoutForm.submit();
         });
 
         // Handle form submission
@@ -205,7 +222,49 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutForm.style.display = 'none';
             showCheckoutButton.style.display = 'block';
             successMessage.style.display = 'block';
+            paypalButtonContainer.style.display = 'none';
             renderCart();
+        });
+
+        // PayPal button rendering
+        const renderPaypalButton = (total) => {
+            if (window.paypal && total > 0) {
+                paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: total.toFixed(2),
+                                    currency_code: 'CAD'
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then(details => {
+                            paymentStatusInput.value = 'Payé via PayPal';
+                            paymentIdInput.value = data.orderID;
+                            checkoutForm.submit();
+                        });
+                    },
+                    onError: (err) => {
+                        alert('Erreur lors du paiement PayPal. Veuillez réessayer ou choisir une autre méthode.');
+                        console.error('PayPal error:', err);
+                    }
+                }).render('#paypal-button-container');
+            }
+        };
+
+        // Show PayPal button after form input validation
+        checkoutForm.addEventListener('input', () => {
+            const name = document.getElementById('checkout-name').value;
+            const email = document.getElementById('checkout-email').value;
+            const address = document.getElementById('checkout-address').value;
+            if (name && email && address && cart.length > 0) {
+                paypalButtonContainer.style.display = 'block';
+            } else {
+                paypalButtonContainer.style.display = 'none';
+            }
         });
 
         renderCart();
