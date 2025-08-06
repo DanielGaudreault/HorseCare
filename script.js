@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cookieNotice = document.getElementById('cookie-notice');
     const acceptButton = document.getElementById('accept-cookies');
 
-    // Check if cookies have been accepted
     if (!localStorage.getItem('cookiesAccepted')) {
         cookieNotice.style.display = 'block';
     }
@@ -75,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddToCart = document.querySelector('.add-to-cart-modal');
     const closeModal = document.querySelector('.close-modal');
 
-    // Show modal when clicking "Détails"
     document.querySelectorAll('.product-details').forEach(button => {
         button.addEventListener('click', () => {
             const name = button.getAttribute('data-name');
@@ -91,12 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Close modal
     closeModal.addEventListener('click', () => {
         modal.style.display = 'none';
     });
 
-    // Close modal when clicking outside
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
@@ -104,13 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Cart functionality
+// Cart and checkout functionality
 document.addEventListener('DOMContentLoaded', () => {
     const cartItemsContainer = document.getElementById('cart-items');
     const cartTotalElement = document.getElementById('cart-total');
-    const checkoutButton = document.getElementById('checkout-button');
+    const showCheckoutButton = document.getElementById('show-checkout-form');
+    const checkoutForm = document.getElementById('checkout-form');
+    const cancelCheckout = document.getElementById('cancel-checkout');
+    const orderDetailsInput = document.getElementById('order-details');
+    const successMessage = document.getElementById('success-message');
 
-    // Initialize cart from localStorage
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Add to cart
@@ -129,34 +128,35 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('cart', JSON.stringify(cart));
             alert(`${name} ajouté au panier !`);
             document.getElementById('product-modal').style.display = 'none';
+            if (cartItemsContainer) renderCart();
         });
     });
 
-    // Render cart on cart.html
+    // Render cart
+    const renderCart = () => {
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            cartItem.innerHTML = `
+                <span>${item.name} - ${item.price.toFixed(2)} C$ x </span>
+                <input type="number" min="1" value="${item.quantity}" data-index="${index}">
+                <button class="remove-item" data-index="${index}">Supprimer</button>
+            `;
+            cartItemsContainer.appendChild(cartItem);
+        });
+
+        cartTotalElement.textContent = `Total : ${total.toFixed(2)} C$`;
+        showCheckoutButton.disabled = cart.length === 0;
+    };
+
+    // Update quantity
     if (cartItemsContainer) {
-        const renderCart = () => {
-            cartItemsContainer.innerHTML = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                cartItem.innerHTML = `
-                    <span>${item.name} - ${item.price.toFixed(2)} C$ x </span>
-                    <input type="number" min="1" value="${item.quantity}" data-index="${index}">
-                    <button class="remove-item" data-index="${index}">Supprimer</button>
-                `;
-                cartItemsContainer.appendChild(cartItem);
-            });
-
-            cartTotalElement.textContent = `Total : ${total.toFixed(2)} C$`;
-            checkoutButton.disabled = cart.length === 0;
-        };
-
-        // Update quantity
         cartItemsContainer.addEventListener('change', (e) => {
             if (e.target.type === 'number') {
                 const index = e.target.getAttribute('data-index');
@@ -179,18 +179,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Checkout
-        checkoutButton.addEventListener('click', () => {
+        // Show checkout form
+        showCheckoutButton.addEventListener('click', () => {
             if (cart.length > 0) {
+                checkoutForm.style.display = 'block';
+                showCheckoutButton.style.display = 'none';
                 const orderDetails = cart.map(item => `${item.name} x${item.quantity} - ${item.price.toFixed(2)} C$`).join('\n');
                 const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
-                const subject = encodeURIComponent('Commande de Parage Bragdon');
-                const body = encodeURIComponent(`Détails de la commande :\n${orderDetails}\n\nTotal : ${total} C$`);
-                window.location.href = `mailto:sales@paragebragdon.com?subject=${subject}&body=${body}`;
-                cart = [];
-                localStorage.setItem('cart', JSON.stringify(cart));
-                renderCart();
+                orderDetailsInput.value = `Détails de la commande :\n${orderDetails}\n\nTotal : ${total} C$`;
             }
+        });
+
+        // Cancel checkout
+        cancelCheckout.addEventListener('click', () => {
+            checkoutForm.style.display = 'none';
+            showCheckoutButton.style.display = 'block';
+            successMessage.style.display = 'none';
+        });
+
+        // Handle form submission
+        checkoutForm.addEventListener('submit', (e) => {
+            // Formspree handles email sending; reset cart after submission
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            checkoutForm.style.display = 'none';
+            showCheckoutButton.style.display = 'block';
+            successMessage.style.display = 'block';
+            renderCart();
         });
 
         renderCart();
