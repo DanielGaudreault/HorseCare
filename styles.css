@@ -98,7 +98,7 @@ h3 {
     margin: 0.5rem 0;
 }
 
-.add-to-cart {
+.product-details, .add-to-cart, .add-to-cart-modal {
     background: #444;
     border: none;
     color: #fff;
@@ -107,10 +107,11 @@ h3 {
     padding: 0.5rem 1rem;
     cursor: pointer;
     border-radius: 4px;
+    margin: 0.5rem;
     transition: background 0.3s;
 }
 
-.add-to-cart:hover {
+.product-details:hover, .add-to-cart:hover, .add-to-cart-modal:hover {
     background: #555;
 }
 
@@ -302,6 +303,52 @@ footer p {
     background: #555;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #1a1a1a;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+.modal-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-content p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
 @media (max-width: 768px) {
     nav ul {
         flex-direction: column;
@@ -325,6 +372,11 @@ footer p {
         align-items: flex-start;
         gap: 0.5rem;
     }
+
+    .modal-content {
+        width: 90%;
+        margin: 20% auto;
+    }
 }
 
 @media (max-width: 480px) {
@@ -338,6 +390,14 @@ footer p {
 
     .contact-form input,
     .contact-form textarea {
+        font-size: 0.9rem;
+    }
+
+    .modal-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .modal-content p {
         font-size: 0.9rem;
     }
 }
