@@ -9,6 +9,9 @@ body {
     color: #fff;
     font-family: 'Helvetica', 'Arial', sans-serif;
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
@@ -31,7 +34,7 @@ nav ul {
     align-items: center;
 }
 
-nav a, #admin-link {
+nav a, #admin-link, #history-link {
     color: #fff;
     text-decoration: none;
     font-size: 1.2rem;
@@ -40,11 +43,11 @@ nav a, #admin-link {
     transition: color 0.3s;
 }
 
-nav a:hover, #admin-link:hover {
+nav a:hover, #admin-link:hover, #history-link:hover {
     color: #aaa;
 }
 
-#search-toggle, #login-toggle, #logout-button {
+#search-toggle, #login-toggle, #signup-toggle, #logout-button {
     background: none;
     border: none;
     color: #fff;
@@ -53,15 +56,15 @@ nav a:hover, #admin-link:hover {
     transition: color 0.3s;
 }
 
-#search-toggle:hover, #login-toggle:hover, #logout-button:hover {
+#search-toggle:hover, #login-toggle:hover, #signup-toggle:hover, #logout-button:hover {
     color: #aaa;
 }
 
-#search-container, #login-container {
+#search-container, #login-container, #signup-container {
     display: inline-block;
 }
 
-#search-input, #login-form input {
+#search-input, #login-form input, #signup-form input {
     padding: 0.5rem;
     background: #222;
     border: none;
@@ -72,13 +75,13 @@ nav a:hover, #admin-link:hover {
     margin: 0.5rem 0;
 }
 
-#login-form {
+#login-form, #signup-form {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-#login-form button {
+#login-form button, #signup-form button {
     background: #444;
     border: none;
     color: #fff;
@@ -88,11 +91,11 @@ nav a:hover, #admin-link:hover {
     transition: background 0.3s;
 }
 
-#login-form button:hover {
+#login-form button:hover, #signup-form button:hover {
     background: #555;
 }
 
-#search-input:focus, #login-form input:focus {
+#search-input:focus, #login-form input:focus, #signup-form input:focus {
     outline: none;
     background: #333;
 }
@@ -101,6 +104,7 @@ main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
+    flex: 1;
 }
 
 section {
@@ -194,7 +198,7 @@ h3 {
     text-align: center;
 }
 
-#contact, #cart, #admin-dashboard {
+#contact, #cart, #admin-dashboard, #history {
     text-align: center;
 }
 
@@ -333,6 +337,7 @@ footer {
     text-align: center;
     padding: 1rem;
     background: #111;
+    margin-top: auto;
 }
 
 footer p {
@@ -421,11 +426,11 @@ footer p {
         gap: 1rem;
     }
 
-    nav a, #search-toggle, #login-toggle, #logout-button, #admin-link {
+    nav a, #search-toggle, #login-toggle, #signup-toggle, #logout-button, #admin-link, #history-link {
         font-size: 1rem;
     }
 
-    #search-input, #login-form input {
+    #search-input, #login-form input, #signup-form input {
         width: 100%;
     }
 
@@ -468,7 +473,8 @@ footer p {
     .checkout-form input,
     .checkout-form textarea,
     #search-input,
-    #login-form input {
+    #login-form input,
+    #signup-form input {
         font-size: 0.9rem;
     }
 
