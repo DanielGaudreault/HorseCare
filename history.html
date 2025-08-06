@@ -13,8 +13,31 @@
             <a href="index.html">Accueil</a>
             <a href="products.html">Produits</a>
             <a href="cart.html">Panier</a>
+            <a href="history.html" id="history-link" style="display: none;">Historique</a>
+            <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
+            <button id="search-toggle">Rechercher</button>
+            <button id="login-toggle">Connexion</button>
+            <button id="signup-toggle">Inscription</button>
             <button id="logout-button" style="display: none;">Déconnexion</button>
         </nav>
+        <div id="search-container" style="display: none;">
+            <input type="text" id="search-input" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
+        </div>
+        <div id="login-container" style="display: none;">
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Nom d'utilisateur" required aria-label="Nom d'utilisateur">
+                <input type="password" id="password" placeholder="Mot de passe" required aria-label="Mot de passe">
+                <button type="submit">Connexion</button>
+            </form>
+        </div>
+        <div id="signup-container" style="display: none;">
+            <form id="signup-form">
+                <input type="text" id="signup-username" placeholder="Nom d'utilisateur" required aria-label="Nom d'utilisateur">
+                <input type="email" id="signup-email" placeholder="Email" required aria-label="Email">
+                <input type="password" id="signup-password" placeholder="Mot de passe" required aria-label="Mot de passe">
+                <button type="submit">Inscription</button>
+            </form>
+        </div>
     </header>
 
     <main>
@@ -38,6 +61,10 @@
             </table>
         </section>
     </main>
+
+    <div id="cookie-notice">
+        <p>Nous utilisons des cookies pour améliorer votre expérience. <button id="accept-cookies">Accepter</button></p>
+    </div>
 
     <footer>
         <p>&copy; 2025 Parage Bragdon. Tous droits réservés.</p>
