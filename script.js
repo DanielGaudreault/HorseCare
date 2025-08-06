@@ -2,35 +2,43 @@
 const productData = {
     "Artimud 300g": {
         price: 30.00,
-        description: "Artimud est un produit à base d'argile verte, de miel, de minéraux naturels et d'huiles essentiels. Ses agents actifs naturels éliminent les bactéries et les champignons tout en favorisant la formation de tissus sains. Il est idéal pour remplir les seimes externe et les crevasses peu profondes de la ligne blanche. Grâce à sa consistance épaisse, il restera en place plus longtemps que la plupart des produits ce qui permet aux agents de protection de travailler plus longtemps et empêche les saletés et impuretés d'y entrer. Il est aussi utilisé sous des pads pour garder la sole et la fourchette en santé durant un cycle de ferrage. Pour les crevasses ou seimes plus profondes et mince, nous vous recommandons d'utiliser le Hoof-stuff."
+        description: "Artimud est un produit à base d'argile verte, de miel, de minéraux naturels et d'huiles essentiels. Ses agents actifs naturels éliminent les bactéries et les champignons tout en favorisant la formation de tissus sains. Il est idéal pour remplir les seimes externe et les crevasses peu profondes de la ligne blanche. Grâce à sa consistance épaisse, il restera en place plus longtemps que la plupart des produits ce qui permet aux agents de protection de travailler plus longtemps et empêche les saletés et impuretés d'y entrer. Il est aussi utilisé sous des pads pour garder la sole et la fourchette en santé durant un cycle de ferrage. Pour les crevasses ou seimes plus profondes et mince, nous vous recommandons d'utiliser le Hoof-stuff.",
+        image: "https://via.placeholder.com/600x400?text=Artimud+300g"
     },
     "Artimud 750g": {
         price: 65.00,
-        description: "Artimud 750g est une version plus grande du produit à base d'argile verte, idéal pour un usage prolongé. Il offre les mêmes avantages que l'Artimud 300g, éliminant bactéries et champignons tout en favorisant la santé des tissus. Parfait pour les seimes externes et les crevasses peu profondes. (Remplacez par la description réelle.)"
+        description: "Artimud 750g est une version plus grande du produit à base d'argile verte, idéal pour un usage prolongé. Il offre les mêmes avantages que l'Artimud 300g, éliminant bactéries et champignons tout en favorisant la santé des tissus. Parfait pour les seimes externes et les crevasses peu profondes. (Remplacez par la description réelle.)",
+        image: "https://via.placeholder.com/600x400?text=Artimud+750g"
     },
     "Hoof Stuff": {
         price: 35.00,
-        description: "Hoof Stuff est conçu pour les crevasses et seimes plus profondes et minces. Il aide à protéger et renforcer les structures internes du sabot. (Remplacez par la description réelle.)"
+        description: "Hoof Stuff est conçu pour les crevasses et seimes plus profondes et minces. Il aide à protéger et renforcer les structures internes du sabot. (Remplacez par la description réelle.)",
+        image: "https://via.placeholder.com/600x400?text=Hoof+Stuff"
     },
     "Field Paste 750g": {
         price: 45.00,
-        description: "Field Paste 750g est un produit polyvalent pour le soin des sabots, offrant protection et hydratation. (Remplacez par la description réelle.)"
+        description: "Field Paste 750g est un produit polyvalent pour le soin des sabots, offrant protection et hydratation. (Remplacez par la description réelle.)",
+        image: "https://via.placeholder.com/600x400?text=Field+Paste+750g"
     },
     "HoneyHeel 100ml": {
         price: 25.00,
-        description: "HoneyHeel 100ml est une pommade à base de miel pour traiter les infections et favoriser la guérison des sabots. (Remplacez par la description réelle.)"
+        description: "HoneyHeel 100ml est une pommade à base de miel pour traiter les infections et favoriser la guérison des sabots. (Remplacez par la description réelle.)",
+        image: "https://via.placeholder.com/600x400?text=HoneyHeel+100ml"
     },
     "Sole Cleanse 500ml": {
         price: 30.00,
-        description: "Sole Cleanse 500ml est un spray nettoyant pour la sole et la fourchette, éliminant les bactéries et les impuretés. (Remplacez par la description réelle.)"
+        description: "Sole Cleanse 500ml est un spray nettoyant pour la sole et la fourchette, éliminant les bactéries et les impuretés. (Remplacez par la description réelle.)",
+        image: "https://via.placeholder.com/600x400?text=Sole+Cleanse+500ml"
     },
     "Stronghorn 500ml": {
         price: 40.00,
-        description: "Stronghorn 500ml renforce la corne du sabot pour une meilleure résistance et durabilité. (Remplacez par la description réelle.)"
+        description: "Stronghorn 500ml renforce la corne du sabot pour une meilleure résistance et durabilité. (Remplacez par la description réelle.)",
+        image: "https://via.placeholder.com/600x400?text=Stronghorn+500ml"
     },
     "Ear Balm 500ml": {
         price: 45.00,
-        description: "Ear Balm 500ml est un produit apaisant pour le soin des oreilles des chevaux, réduisant les irritations. (Remplacez par la description réelle.)"
+        description: "Ear Balm 500ml est un produit apaisant pour le soin des oreilles des chevaux, réduisant les irritations. (Remplacez par la description réelle.)",
+        image: "https://via.placeholder.com/600x400?text=Ear+Balm+500ml"
     }
 };
 
@@ -74,9 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddToCart = document.querySelector('.add-to-cart-modal');
     const closeModal = document.querySelector('.close-modal');
 
-    document.querySelectorAll('.product-details').forEach(button => {
-        button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('product-details')) {
+            const name = e.target.getAttribute('data-name');
             const data = productData[name];
             if (data) {
                 modalTitle.textContent = name;
@@ -86,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalAddToCart.setAttribute('data-price', data.price);
                 modal.style.display = 'block';
             }
-        });
+        }
     });
 
     closeModal.addEventListener('click', () => {
@@ -96,6 +104,75 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
+        }
+    });
+});
+
+// Search functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const searchToggle = document.getElementById('search-toggle');
+    const searchContainer = document.getElementById('search-container');
+    const searchInput = document.getElementById('search-input');
+    const productGallery = document.getElementById('product-gallery');
+    const noResults = document.getElementById('no-results');
+
+    // Toggle search input visibility
+    searchToggle.addEventListener('click', () => {
+        searchContainer.style.display = searchContainer.style.display === 'none' ? 'inline-block' : 'none';
+        if (searchContainer.style.display === 'inline-block') {
+            searchInput.focus();
+        } else {
+            searchInput.value = '';
+            if (productGallery) renderProducts(Object.keys(productData));
+        }
+    });
+
+    // Render products dynamically
+    const renderProducts = (productNames) => {
+        if (!productGallery) return;
+        productGallery.innerHTML = '';
+        noResults.style.display = 'none';
+
+        const isIndexPage = window.location.pathname.includes('index.html') || window.location.pathname === '/';
+        const productsToShow = isIndexPage ? productNames.slice(0, 8) : productNames;
+
+        if (productsToShow.length === 0) {
+            noResults.style.display = 'block';
+            return;
+        }
+
+        productsToShow.forEach(name => {
+            const data = productData[name];
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product';
+            productDiv.innerHTML = `
+                <img src="${data.image}" alt="${name} pour soin des sabots">
+                <p>${name} - ${data.price.toFixed(2)} C$</p>
+                <button class="product-details" data-name="${name}">Détails</button>
+                <button class="add-to-cart" data-name="${name}" data-price="${data.price}">Ajouter au panier</button>
+            `;
+            productGallery.appendChild(productDiv);
+        });
+    };
+
+    // Filter products based on search input
+    if (searchInput && productGallery) {
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            const filteredProducts = Object.keys(productData).filter(name =>
+                name.toLowerCase().includes(query)
+            );
+            renderProducts(filteredProducts);
+        });
+
+        // Initial render
+        renderProducts(Object.keys(productData));
+    }
+
+    // Handle search navigation
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && searchInput.value.trim() && !window.location.pathname.includes('products.html')) {
+            window.location.href = 'products.html';
         }
     });
 });
@@ -117,10 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Add to cart
-    document.querySelectorAll('.add-to-cart, .add-to-cart-modal').forEach(button => {
-        button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
-            const price = parseFloat(button.getAttribute('data-price'));
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('add-to-cart') || e.target.classList.contains('add-to-cart-modal')) {
+            const name = e.target.getAttribute('data-name');
+            const price = parseFloat(e.target.getAttribute('data-price'));
             const existingItem = cart.find(item => item.name === name);
 
             if (existingItem) {
@@ -133,11 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(`${name} ajouté au panier !`);
             document.getElementById('product-modal').style.display = 'none';
             if (cartItemsContainer) renderCart();
-        });
+        }
     });
 
     // Render cart
     const renderCart = () => {
+        if (!cartItemsContainer) return;
         cartItemsContainer.innerHTML = '';
         let total = 0;
 
