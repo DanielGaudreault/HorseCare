@@ -2,101 +2,48 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parage Bragdon - Tableau de bord Admin</title>
-    <meta name="description" content="Tableau de bord administrateur pour consulter les reçus de commandes chez Parage Bragdon.">
-    <meta name="author" content="Parage Bragdon">
-    <meta name="keywords" content="admin, reçus, commandes, Parage Bragdon">
-    <meta property="og:url" content="https://paragebragdon.com/admin.html">
-    <meta property="og:site_name" content="Parage Bragdon">
-    <meta property="og:title" content="Parage Bragdon - Tableau de bord Admin">
-    <meta property="og:description" content="Tableau de bord administrateur pour consulter les reçus de commandes chez Parage Bragdon.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
-    <meta property="og:locale" content="fr_FR">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Parage Bragdon - Tableau de bord Admin">
-    <meta name="twitter:description" content="Tableau de bord administrateur pour consulter les reçus de commandes chez Parage Bragdon.">
-    <meta name="twitter:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
-    <meta name="twitter:image:alt" content="Parage Bragdon Admin">
-    <meta name="theme-color" content="#735e4a">
-    <meta name="google-site-verification" content="sVG358mPSuGwSEhhBTpzC8YA8ZkrW5Nhav9zKZE6je4">
+    <title>Admin - Parage Bragdon</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
+        <h1>Parage Bragdon - Admin</h1>
         <nav>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="products.html">Boutique</a></li>
-                <li><a href="cart.html">Panier</a></li>
-                <li>
-                    <button id="search-toggle" aria-label="Ouvrir la recherche">🔍</button>
-                    <div id="search-container" style="display: none;">
-                        <input type="text" id="search-input" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
-                    </div>
-                </li>
-                <li>
-                    <button id="login-toggle" aria-label="Connexion">Connexion</button>
-                    <button id="signup-toggle" aria-label="S'inscrire">S'inscrire</button>
-                    <div id="login-container" style="display: none;">
-                        <form id="login-form">
-                            <input type="text" id="username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
-                            <input type="password" id="password" placeholder="Mot de passe" aria-label="Mot de passe" required>
-                            <button type="submit">Se connecter</button>
-                        </form>
-                    </div>
-                    <div id="signup-container" style="display: none;">
-                        <form id="signup-form">
-                            <input type="text" id="signup-username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
-                            <input type="email" id="signup-email" placeholder="Email" aria-label="Email" required>
-                            <input type="password" id="signup-password" placeholder="Mot de passe" aria-label="Mot de passe" required>
-                            <button type="submit">S'inscrire</button>
-                        </form>
-                    </div>
-                    <button id="logout-button" style="display: none;">Déconnexion</button>
-                    <a href="history.html" id="history-link" style="display: none;">Historique</a>
-                    <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
-                </li>
-            </ul>
+            <a href="index.html">Accueil</a>
+            <a href="products.html">Produits</a>
+            <a href="cart.html">Panier</a>
+            <button id="logout-button" style="display: none;">Déconnexion</button>
         </nav>
     </header>
 
     <main>
-        <section id="admin-dashboard">
+        <section id="admin">
             <h2>Tableau de bord Admin</h2>
-            <h3>Reçus des commandes</h3>
-            <table id="orders-table">
+            <h3>Commandes</h3>
+            <p id="no-orders" style="display: none;">Aucune commande trouvée.</p>
+            <table>
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Nom d'utilisateur</th>
-                        <th>Nom du client</th>
+                        <th>Utilisateur</th>
+                        <th>Nom</th>
                         <th>Email</th>
                         <th>Adresse</th>
                         <th>Téléphone</th>
-                        <th>Détails de la commande</th>
-                        <th>Statut du paiement</th>
-                        <th>ID du paiement</th>
+                        <th>Détails</th>
+                        <th>Statut Paiement</th>
+                        <th>ID Paiement</th>
                     </tr>
                 </thead>
                 <tbody id="orders-body"></tbody>
             </table>
-            <p id="no-orders" style="display: none; text-align: center;">Aucune commande trouvée.</p>
         </section>
     </main>
 
     <footer>
-        <p>Parage Bragdon</p>
-        <p>Copyright © 2023 Parage Bragdon - Tous droits réservés.</p>
+        <p>&copy; 2025 Parage Bragdon. Tous droits réservés.</p>
     </footer>
-
-    <div id="cookie-notice">
-        <p>Ce site utilise des cookies.</p>
-        <p>Nous utilisons des cookies pour analyser le trafic du site et optimiser votre expérience. En acceptant, vos données seront agrégées avec celles des autres utilisateurs.</p>
-        <button id="accept-cookies">Accepter</button>
-    </div>
 
     <script src="script.js"></script>
 </body>
