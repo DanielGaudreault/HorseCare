@@ -40,6 +40,7 @@
                 </li>
                 <li>
                     <button id="login-toggle" aria-label="Connexion">Connexion</button>
+                    <button id="signup-toggle" aria-label="S'inscrire">S'inscrire</button>
                     <div id="login-container" style="display: none;">
                         <form id="login-form">
                             <input type="text" id="username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
@@ -47,7 +48,16 @@
                             <button type="submit">Se connecter</button>
                         </form>
                     </div>
+                    <div id="signup-container" style="display: none;">
+                        <form id="signup-form">
+                            <input type="text" id="signup-username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
+                            <input type="email" id="signup-email" placeholder="Email" aria-label="Email" required>
+                            <input type="password" id="signup-password" placeholder="Mot de passe" aria-label="Mot de passe" required>
+                            <button type="submit">S'inscrire</button>
+                        </form>
+                    </div>
                     <button id="logout-button" style="display: none;">Déconnexion</button>
+                    <a href="history.html" id="history-link" style="display: none;">Historique</a>
                     <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
                 </li>
             </ul>
