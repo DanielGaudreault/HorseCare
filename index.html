@@ -37,6 +37,18 @@
                         <input type="text" id="search-input" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
                     </div>
                 </li>
+                <li>
+                    <button id="login-toggle" aria-label="Connexion">Connexion</button>
+                    <div id="login-container" style="display: none;">
+                        <form id="login-form">
+                            <input type="text" id="username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
+                            <input type="password" id="password" placeholder="Mot de passe" aria-label="Mot de passe" required>
+                            <button type="submit">Se connecter</button>
+                        </form>
+                    </div>
+                    <button id="logout-button" style="display: none;">Déconnexion</button>
+                    <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
+                </li>
             </ul>
         </nav>
     </header>
