@@ -42,6 +42,12 @@ const productData = {
     }
 };
 
+// Hardcoded admin credentials (replace with backend in production)
+const ADMIN_CREDENTIALS = {
+    username: 'admin',
+    password: 'admin123'
+};
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -71,6 +77,82 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('cookiesAccepted', 'true');
         cookieNotice.style.display = 'none';
     });
+});
+
+// Login functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const loginToggle = document.getElementById('login-toggle');
+    const loginContainer = document.getElementById('login-container');
+    const loginForm = document.getElementById('login-form');
+    const logoutButton = document.getElementById('logout-button');
+    const adminLink = document.getElementById('admin-link');
+
+    // Check login status
+    const updateLoginUI = () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            loginToggle.style.display = 'none';
+            loginContainer.style.display = 'none';
+            logoutButton.style.display = 'inline-block';
+            if (user.isAdmin) {
+                adminLink.style.display = 'inline-block';
+            }
+        } else {
+            loginToggle.style.display = 'inline-block';
+            logoutButton.style.display = 'none';
+            adminLink.style.display = 'none';
+        }
+    };
+
+    // Toggle login form
+    loginToggle.addEventListener('click', () => {
+        loginContainer.style.display = loginContainer.style.display === 'none' ? 'inline-block' : 'none';
+        if (loginContainer.style.display === 'inline-block') {
+            document.getElementById('username').focus();
+        }
+    });
+
+    // Handle login
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+            localStorage.setItem('user', JSON.stringify({ username, isAdmin: true }));
+            alert('Connexion réussie en tant qu\'admin !');
+            window.location.href = 'admin.html';
+        } else if (username && password) {
+            localStorage.setItem('user', JSON.stringify({ username, isAdmin: false }));
+            alert('Connexion réussie !');
+        } else {
+            alert('Nom d\'utilisateur ou mot de passe incorrect.');
+        }
+
+        loginContainer.style.display = 'none';
+        loginForm.reset();
+        updateLoginUI();
+    });
+
+    // Handle logout
+    logoutButton.addEventListener('click', () => {
+        localStorage.removeItem('user');
+        updateLoginUI();
+        alert('Déconnexion réussie.');
+        if (window.location.pathname.includes('admin.html')) {
+            window.location.href = 'index.html';
+        }
+    });
+
+    // Protect admin page
+    if (window.location.pathname.includes('admin.html')) {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user || !user.isAdmin) {
+            window.location.href = 'index.html';
+        }
+    }
+
+    updateLoginUI();
 });
 
 // Product modal functionality
@@ -156,195 +238,4 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Filter products based on search input
-    if (searchInput && productGallery) {
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.trim().toLowerCase();
-            const filteredProducts = Object.keys(productData).filter(name =>
-                name.toLowerCase().includes(query)
-            );
-            renderProducts(filteredProducts);
-        });
-
-        // Initial render
-        renderProducts(Object.keys(productData));
-    }
-
-    // Handle search navigation
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && searchInput.value.trim() && !window.location.pathname.includes('products.html')) {
-            window.location.href = 'products.html';
-        }
-    });
-});
-
-// Cart and checkout functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const cartItemsContainer = document.getElementById('cart-items');
-    const cartTotalElement = document.getElementById('cart-total');
-    const showCheckoutButton = document.getElementById('show-checkout-form');
-    const checkoutForm = document.getElementById('checkout-form');
-    const cancelCheckout = document.getElementById('cancel-checkout');
-    const submitWithoutPayment = document.getElementById('submit-without-payment');
-    const orderDetailsInput = document.getElementById('order-details');
-    const paymentStatusInput = document.getElementById('payment-status');
-    const paymentIdInput = document.getElementById('payment-id');
-    const successMessage = document.getElementById('success-message');
-    const paypalButtonContainer = document.getElementById('paypal-button-container');
-
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    // Add to cart
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('add-to-cart') || e.target.classList.contains('add-to-cart-modal')) {
-            const name = e.target.getAttribute('data-name');
-            const price = parseFloat(e.target.getAttribute('data-price'));
-            const existingItem = cart.find(item => item.name === name);
-
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ name, price, quantity: 1 });
-            }
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-            alert(`${name} ajouté au panier !`);
-            document.getElementById('product-modal').style.display = 'none';
-            if (cartItemsContainer) renderCart();
-        }
-    });
-
-    // Render cart
-    const renderCart = () => {
-        if (!cartItemsContainer) return;
-        cartItemsContainer.innerHTML = '';
-        let total = 0;
-
-        cart.forEach((item, index) => {
-            const itemTotal = item.price * item.quantity;
-            total += itemTotal;
-
-            const cartItem = document.createElement('div');
-            cartItem.className = 'cart-item';
-            cartItem.innerHTML = `
-                <span>${item.name} - ${item.price.toFixed(2)} C$ x </span>
-                <input type="number" min="1" value="${item.quantity}" data-index="${index}">
-                <button class="remove-item" data-index="${index}">Supprimer</button>
-            `;
-            cartItemsContainer.appendChild(cartItem);
-        });
-
-        cartTotalElement.textContent = `Total : ${total.toFixed(2)} C$`;
-        showCheckoutButton.disabled = cart.length === 0;
-        if (paypalButtonContainer) {
-            paypalButtonContainer.style.display = 'none';
-            renderPaypalButton(total);
-        }
-    };
-
-    // Update quantity
-    if (cartItemsContainer) {
-        cartItemsContainer.addEventListener('change', (e) => {
-            if (e.target.type === 'number') {
-                const index = e.target.getAttribute('data-index');
-                const newQuantity = parseInt(e.target.value);
-                if (newQuantity >= 1) {
-                    cart[index].quantity = newQuantity;
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    renderCart();
-                }
-            }
-        });
-
-        // Remove item
-        cartItemsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-item')) {
-                const index = e.target.getAttribute('data-index');
-                cart.splice(index, 1);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                renderCart();
-            }
-        });
-
-        // Show checkout form
-        showCheckoutButton.addEventListener('click', () => {
-            if (cart.length > 0) {
-                checkoutForm.style.display = 'block';
-                showCheckoutButton.style.display = 'none';
-                const orderDetails = cart.map(item => `${item.name} x${item.quantity} - ${item.price.toFixed(2)} C$`).join('\n');
-                const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
-                orderDetailsInput.value = `Détails de la commande :\n${orderDetails}\n\nTotal : ${total} C$`;
-                paypalButtonContainer.style.display = 'none';
-            }
-        });
-
-        // Cancel checkout
-        cancelCheckout.addEventListener('click', () => {
-            checkoutForm.style.display = 'none';
-            showCheckoutButton.style.display = 'block';
-            successMessage.style.display = 'none';
-            paypalButtonContainer.style.display = 'none';
-        });
-
-        // Submit without payment
-        submitWithoutPayment.addEventListener('click', () => {
-            paymentStatusInput.value = 'Non payé';
-            paymentIdInput.value = '';
-            checkoutForm.submit();
-        });
-
-        // Handle form submission
-        checkoutForm.addEventListener('submit', (e) => {
-            // Formspree handles email sending; reset cart after submission
-            cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
-            checkoutForm.style.display = 'none';
-            showCheckoutButton.style.display = 'block';
-            successMessage.style.display = 'block';
-            paypalButtonContainer.style.display = 'none';
-            renderCart();
-        });
-
-        // PayPal button rendering
-        const renderPaypalButton = (total) => {
-            if (window.paypal && total > 0) {
-                paypal.Buttons({
-                    createOrder: (data, actions) => {
-                        return actions.order.create({
-                            purchase_units: [{
-                                amount: {
-                                    value: total.toFixed(2),
-                                    currency_code: 'CAD'
-                                }
-                            }]
-                        });
-                    },
-                    onApprove: (data, actions) => {
-                        return actions.order.capture().then(details => {
-                            paymentStatusInput.value = 'Payé via PayPal';
-                            paymentIdInput.value = data.orderID;
-                            checkoutForm.submit();
-                        });
-                    },
-                    onError: (err) => {
-                        alert('Erreur lors du paiement PayPal. Veuillez réessayer ou choisir une autre méthode.');
-                        console.error('PayPal error:', err);
-                    }
-                }).render('#paypal-button-container');
-            }
-        };
-
-        // Show PayPal button after form input validation
-        checkoutForm.addEventListener('input', () => {
-            const name = document.getElementById('checkout-name').value;
-            const email = document.getElementById('checkout-email').value;
-            const address = document.getElementById('checkout-address').value;
-            if (name && email && address && cart.length > 0) {
-                paypalButtonContainer.style.display = 'block';
-            } else {
-                paypalButtonContainer.style.display = 'none';
-            }
-        });
-
-        renderCart();
-    }
-});
+    if (
