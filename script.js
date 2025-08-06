@@ -49,20 +49,22 @@ const ADMIN_CREDENTIALS = {
 };
 
 // Smooth scrolling for navigation links
-document.querySelectorAll('nav a').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const href = this.getAttribute('href');
-        if (href.includes('#')) {
-            const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+const initSmoothScrolling = () => {
+    document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            if (href.includes('#')) {
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                window.location.href = href;
             }
-        } else {
-            window.location.href = href;
-        }
+        });
     });
-});
+};
 
 // Cookie notice
 const initCookieNotice = () => {
@@ -341,8 +343,13 @@ const initCart = () => {
         if (e.target.classList.contains('add-to-cart') || e.target.classList.contains('add-to-cart-modal')) {
             const name = e.target.getAttribute('data-name');
             const price = parseFloat(e.target.getAttribute('data-price'));
-            const existingItem = cart.find(item => item.name === name);
+            if (!name || isNaN(price)) {
+                console.error('Invalid product data:', { name, price });
+                alert('Erreur : produit invalide.');
+                return;
+            }
 
+            const existingItem = cart.find(item => item.name === name);
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
@@ -351,8 +358,12 @@ const initCart = () => {
 
             localStorage.setItem('cart', JSON.stringify(cart));
             alert(`${name} ajouté au panier !`);
-            document.getElementById('product-modal').style.display = 'none';
-            if (cartItemsContainer) renderCart();
+            if (e.target.classList.contains('add-to-cart-modal')) {
+                document.getElementById('product-modal').style.display = 'none';
+            }
+            if (cartItemsContainer) {
+                renderCart();
+            }
         }
     });
 
@@ -380,7 +391,9 @@ const initCart = () => {
         showCheckoutButton.disabled = cart.length === 0;
         if (paypalButtonContainer) {
             paypalButtonContainer.style.display = 'none';
-            renderPaypalButton(total);
+            if (cart.length > 0) {
+                renderPaypalButton(total);
+            }
         }
     };
 
@@ -573,6 +586,7 @@ const initPurchaseHistory = () => {
 
 // Initialize all functionality
 document.addEventListener('DOMContentLoaded', () => {
+    initSmoothScrolling();
     initCookieNotice();
     initAuth();
     initProductModal();
