@@ -42,41 +42,49 @@
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=Artimud+300g" alt="Artimud 300g pour soin des sabots">
                     <p>Artimud 300g - 30.00 C$</p>
+                    <button class="product-details" data-name="Artimud 300g">Détails</button>
                     <button class="add-to-cart" data-name="Artimud 300g" data-price="30.00">Ajouter au panier</button>
                 </div>
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=Artimud+750g" alt="Artimud 750g pour soin des sabots">
                     <p>Artimud 750g - 65.00 C$</p>
+                    <button class="product-details" data-name="Artimud 750g">Détails</button>
                     <button class="add-to-cart" data-name="Artimud 750g" data-price="65.00">Ajouter au panier</button>
                 </div>
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=Hoof+Stuff" alt="Hoof Stuff pour soin des sabots">
                     <p>Hoof Stuff - 35.00 C$</p>
+                    <button class="product-details" data-name="Hoof Stuff">Détails</button>
                     <button class="add-to-cart" data-name="Hoof Stuff" data-price="35.00">Ajouter au panier</button>
                 </div>
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=Field+Paste+750g" alt="Field Paste 750g pour soin des sabots">
                     <p>Field Paste 750g - 45.00 C$</p>
+                    <button class="product-details" data-name="Field Paste 750g">Détails</button>
                     <button class="add-to-cart" data-name="Field Paste 750g" data-price="45.00">Ajouter au panier</button>
                 </div>
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=HoneyHeel+100ml" alt="HoneyHeel 100ml pour soin des sabots">
                     <p>HoneyHeel 100ml - 25.00 C$</p>
+                    <button class="product-details" data-name="HoneyHeel 100ml">Détails</button>
                     <button class="add-to-cart" data-name="HoneyHeel 100ml" data-price="25.00">Ajouter au panier</button>
                 </div>
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=Sole+Cleanse+500ml" alt="Sole Cleanse 500ml pour soin des sabots">
                     <p>Sole Cleanse 500ml - 30.00 C$</p>
+                    <button class="product-details" data-name="Sole Cleanse 500ml">Détails</button>
                     <button class="add-to-cart" data-name="Sole Cleanse 500ml" data-price="30.00">Ajouter au panier</button>
                 </div>
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=Stronghorn+500ml" alt="Stronghorn 500ml pour soin des sabots">
                     <p>Stronghorn 500ml - 40.00 C$</p>
+                    <button class="product-details" data-name="Stronghorn 500ml">Détails</button>
                     <button class="add-to-cart" data-name="Stronghorn 500ml" data-price="40.00">Ajouter au panier</button>
                 </div>
                 <div class="product">
                     <img src="https://via.placeholder.com/600x400?text=Ear+Balm+500ml" alt="Ear Balm 500ml pour soin des oreilles">
                     <p>Ear Balm 500ml - 45.00 C$</p>
+                    <button class="product-details" data-name="Ear Balm 500ml">Détails</button>
                     <button class="add-to-cart" data-name="Ear Balm 500ml" data-price="45.00">Ajouter au panier</button>
                 </div>
             </div>
@@ -100,7 +108,7 @@
         <section id="contact">
             <h2>Contact</h2>
             <p>Prise de rendez-vous et questions</p>
-            <p>Contacter-moi pour une prise de rendez-vous ou pour toutes questions relatives aux sabots ou aux produits red horses.</p>
+            <p>Contacter-moi pour une prise de rendez-vous ou pour toutes questions relatives aux sabots ou aux produits Red Horse.</p>
             <form class="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
                 <label for="name">Nom</label>
                 <input type="text" id="name" name="name" placeholder="Nom" required>
@@ -127,6 +135,16 @@
         <p>Ce site utilise des cookies.</p>
         <p>Nous utilisons des cookies pour analyser le trafic du site et optimiser votre expérience. En acceptant, vos données seront agrégées avec celles des autres utilisateurs.</p>
         <button id="accept-cookies">Accepter</button>
+    </div>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-price"></p>
+            <p id="modal-description"></p>
+            <button class="add-to-cart-modal" data-name="" data-price="">Ajouter au panier</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
