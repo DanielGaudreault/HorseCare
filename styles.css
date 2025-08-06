@@ -5,26 +5,31 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #4A3728; /* Rich brown background */
+    color: #F5F5F5; /* Light gray for text readability */
 }
 
 header {
-    background-color: #333;
-    color: white;
+    background-color: #3C2F22; /* Slightly darker brown for header */
+    color: #F5F5F5;
     padding: 1rem;
     text-align: center;
 }
 
 nav a, nav button {
-    color: white;
+    color: #F5F5F5;
     margin: 0 1rem;
     text-decoration: none;
-    background: none;
+    background-color: #5C4833; /* Medium brown for buttons */
     border: none;
+    padding: 0.5rem 1rem;
     cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-nav button:hover, nav a:hover {
-    text-decoration: underline;
+nav a:hover, nav button:hover {
+    background-color: #8B6F47; /* Lighter brown on hover */
 }
 
 #search-container, #login-container, #signup-container {
@@ -38,6 +43,10 @@ nav button:hover, nav a:hover {
     padding: 0.5rem;
     width: 80%;
     max-width: 300px;
+    border: 1px solid #8B6F47;
+    border-radius: 5px;
+    background-color: #FFF;
+    color: #333;
 }
 
 #contact-form textarea {
@@ -60,20 +69,32 @@ main {
 }
 
 .product {
-    border: 1px solid #ddd;
+    border: 1px solid #8B6F47;
     padding: 1rem;
     text-align: center;
+    background-color: #5C4833; /* Medium brown for product cards */
+    border-radius: 5px;
 }
 
 .product img {
     max-width: 100%;
     height: auto;
+    border-radius: 5px;
 }
 
-.product button, #show-checkout-form, #cancel-checkout, #submit-without-payment {
+.product button, #show-checkout-form, #cancel-checkout, #submit-without-payment, #contact-form button, #login-form button, #signup-form button {
     margin: 0.5rem;
     padding: 0.5rem;
     cursor: pointer;
+    background-color: #5C4833; /* Medium brown for buttons */
+    color: #F5F5F5;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.product button:hover, #show-checkout-form:hover, #cancel-checkout:hover, #submit-without-payment:hover, #contact-form button:hover, #login-form button:hover, #signup-form button:hover {
+    background-color: #8B6F47; /* Lighter brown on hover */
 }
 
 .cart-item {
@@ -81,26 +102,51 @@ main {
     justify-content: space-between;
     align-items: center;
     margin: 0.5rem 0;
+    background-color: #5C4833;
+    padding: 0.5rem;
+    border-radius: 5px;
 }
 
 .cart-item input {
     width: 50px;
+    border: 1px solid #8B6F47;
+    border-radius: 5px;
+}
+
+.cart-item button {
+    background-color: #5C4833;
+    color: #F5F5F5;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cart-item button:hover {
+    background-color: #8B6F47; /* Lighter brown on hover */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    background-color: #5C4833;
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #8B6F47;
     padding: 0.5rem;
     text-align: left;
 }
 
 th {
-    background-color: #f4f4f4;
+    background-color: #3C2F22; /* Darker brown for table headers */
+}
+
+td pre {
+    margin: 0;
+    white-space: pre-wrap;
 }
 
 .modal {
@@ -116,12 +162,13 @@ th {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: #5C4833;
     padding: 2rem;
     border-radius: 5px;
     position: relative;
     max-width: 500px;
     width: 90%;
+    color: #F5F5F5;
 }
 
 .close-modal {
@@ -130,29 +177,40 @@ th {
     right: 15px;
     font-size: 1.5rem;
     cursor: pointer;
+    color: #F5F5F5;
+}
+
+.close-modal:hover {
+    color: #8B6F47; /* Lighter brown on hover */
 }
 
 #cookie-notice {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #333;
-    color: white;
+    background-color: #3C2F22;
+    color: #F5F5F5;
     text-align: center;
     padding: 1rem;
 }
 
 #cookie-notice button {
-    background-color: #555;
-    color: white;
+    background-color: #5C4833;
+    color: #F5F5F5;
     border: none;
     padding: 0.5rem;
     cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#cookie-notice button:hover {
+    background-color: #8B6F47; /* Lighter brown on hover */
 }
 
 footer {
-    background-color: #333;
-    color: white;
+    background-color: #3C2F22;
+    color: #F5F5F5;
     text-align: center;
     padding: 1rem;
     margin-top: auto;
@@ -166,5 +224,9 @@ footer {
 
     #product-gallery {
         grid-template-columns: 1fr;
+    }
+
+    main {
+        padding: 1rem;
     }
 }
