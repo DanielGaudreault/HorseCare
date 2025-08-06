@@ -2,88 +2,51 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parage Bragdon - Boutique</title>
-    <meta name="description" content="Découvrez tous les produits Red Horse pour le soin des sabots de vos chevaux chez Parage Bragdon.">
-    <meta name="author" content="Parage Bragdon">
-    <meta name="keywords" content="produits Red Horse, soin des sabots, parage, chevaux">
-    <meta property="og:url" content="https://paragebragdon.com/products.html">
-    <meta property="og:site_name" content="Parage Bragdon">
-    <meta property="og:title" content="Parage Bragdon - Boutique">
-    <meta property="og:description" content="Découvrez tous les produits Red Horse pour le soin des sabots de vos chevaux chez Parage Bragdon.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
-    <meta property="og:locale" content="fr_FR">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Parage Bragdon - Boutique">
-    <meta name="twitter:description" content="Découvrez tous les produits Red Horse pour le soin des sabots de vos chevaux chez Parage Bragdon.">
-    <meta name="twitter:image" content="https://img1.wsimg.com/isteam/ip/8d1b66df-1696-449a-922f-2befce22580e/297446641_10225622700846851_403089506949403717.jpg">
-    <meta name="twitter:image:alt" content="Parage Bragdon Boutique">
-    <meta name="theme-color" content="#735e4a">
-    <meta name="google-site-verification" content="sVG358mPSuGwSEhhBTpzC8YA8ZkrW5Nhav9zKZE6je4">
+    <title>Produits - Parage Bragdon</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
+        <h1>Parage Bragdon</h1>
         <nav>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="products.html">Boutique</a></li>
-                <li><a href="cart.html">Panier</a></li>
-                <li>
-                    <button id="search-toggle" aria-label="Ouvrir la recherche">🔍</button>
-                    <div id="search-container" style="display: none;">
-                        <input type="text" id="search-input" placeholder="Rechercher un produit..." aria-label="Rechercher un produit">
-                    </div>
-                </li>
-                <li>
-                    <button id="login-toggle" aria-label="Connexion">Connexion</button>
-                    <button id="signup-toggle" aria-label="S'inscrire">S'inscrire</button>
-                    <div id="login-container" style="display: none;">
-                        <form id="login-form">
-                            <input type="text" id="username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
-                            <input type="password" id="password" placeholder="Mot de passe" aria-label="Mot de passe" required>
-                            <button type="submit">Se connecter</button>
-                        </form>
-                    </div>
-                    <div id="signup-container" style="display: none;">
-                        <form id="signup-form">
-                            <input type="text" id="signup-username" placeholder="Nom d'utilisateur" aria-label="Nom d'utilisateur" required>
-                            <input type="email" id="signup-email" placeholder="Email" aria-label="Email" required>
-                            <input type="password" id="signup-password" placeholder="Mot de passe" aria-label="Mot de passe" required>
-                            <button type="submit">S'inscrire</button>
-                        </form>
-                    </div>
-                    <button id="logout-button" style="display: none;">Déconnexion</button>
-                    <a href="history.html" id="history-link" style="display: none;">Historique</a>
-                    <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
-                </li>
-            </ul>
+            <a href="index.html">Accueil</a>
+            <a href="products.html">Produits</a>
+            <a href="cart.html">Panier</a>
+            <a href="history.html" id="history-link" style="display: none;">Historique</a>
+            <a href="admin.html" id="admin-link" style="display: none;">Admin</a>
+            <button id="search-toggle">Rechercher</button>
+            <button id="login-toggle">Connexion</button>
+            <button id="signup-toggle">Inscription</button>
+            <button id="logout-button" style="display: none;">Déconnexion</button>
         </nav>
+        <div id="search-container" style="display: none;">
+            <input type="text" id="search-input" placeholder="Rechercher un produit...">
+        </div>
+        <div id="login-container" style="display: none;">
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+                <input type="password" id="password" placeholder="Mot de passe" required>
+                <button type="submit">Connexion</button>
+            </form>
+        </div>
+        <div id="signup-container" style="display: none;">
+            <form id="signup-form">
+                <input type="text" id="signup-username" placeholder="Nom d'utilisateur" required>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Mot de passe" required>
+                <button type="submit">Inscription</button>
+            </form>
+        </div>
     </header>
 
     <main>
-        <section id="all-products">
-            <h2>Tous les produits</h2>
-            <h3>Red Horse Products LTD.</h3>
-            <div class="gallery" id="product-gallery">
-                <!-- Products will be dynamically populated by JavaScript -->
-            </div>
-            <p id="no-results" style="display: none; text-align: center;">Aucun produit trouvé.</p>
+        <section id="products">
+            <h2>Tous les Produits</h2>
+            <p id="no-results" style="display: none;">Aucun produit trouvé.</p>
+            <div id="product-gallery"></div>
         </section>
     </main>
-
-    <footer>
-        <p>Parage Bragdon</p>
-        <p>Copyright © 2023 Parage Bragdon - Tous droits réservés.</p>
-    </footer>
-
-    <div id="cookie-notice">
-        <p>Ce site utilise des cookies.</p>
-        <p>Nous utilisons des cookies pour analyser le trafic du site et optimiser votre expérience. En acceptant, vos données seront agrégées avec celles des autres utilisateurs.</p>
-        <button id="accept-cookies">Accepter</button>
-    </div>
 
     <div id="product-modal" class="modal">
         <div class="modal-content">
@@ -94,6 +57,14 @@
             <button class="add-to-cart-modal" data-name="" data-price="">Ajouter au panier</button>
         </div>
     </div>
+
+    <div id="cookie-notice">
+        <p>Nous utilisons des cookies pour améliorer votre expérience. <button id="accept-cookies">Accepter</button></p>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Parage Bragdon. Tous droits réservés.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
